@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TJ Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink: #0a0a0f;
+      --cream: #f5f0e8;
+      --gold: #c9a84c;
+      --gold-light: #e8d4a0;
+      --teal: #1a9c8c;
+      --teal-dark: #0f6b5e;
+      --rust: #c0392b;
+      --mist: #e8edf5;
+    }
+
+    *, *::before, *::after {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: var(--cream);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.35;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--gold);
+      letter-spacing: 0.5px;
+    }
+
+    .nav-logo span {
+      color: var(--cream);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: rgba(245,240,232,0.6);
+      text-decoration: none;
+      transition: color 0.25s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0; right: 0;
+      height: 1px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      padding: 140px 48px 80px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 80% 30%, rgba(26,156,140,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 20% 80%, rgba(201,168,76,0.08) 0%, transparent 50%),
+        var(--ink);
+    }
+
+    /* Decorative grid lines */
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(52px, 9vw, 110px);
+      line-height: 1.0;
+      max-width: 800px;
+      position: relative;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      margin-top: 28px;
+      font-size: 16px;
+      color: rgba(245,240,232,0.55);
+      max-width: 420px;
+      line-height: 1.8;
+      font-weight: 400;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .hero-cta {
+      margin-top: 48px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      animation: fadeUp 0.8s 0.45s ease both;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--ink);
+      border: none;
+      padding: 14px 32px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+      transition: background 0.25s, transform 0.2s;
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid rgba(245,240,232,0.2);
+      color: var(--cream);
+      padding: 13px 28px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.25s, color 0.25s;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* Floating badge */
+    .hero-stat {
+      position: absolute;
+      right: 80px;
+      bottom: 120px;
+      text-align: right;
+      animation: fadeUp 0.9s 0.6s ease both;
+    }
+
+    .hero-stat .num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 72px;
+      color: rgba(201,168,76,0.15);
+      line-height: 1;
+    }
+
+    .hero-stat .label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.3);
+    }
+
+    /* Scroll hint */
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 48px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.3);
+      animation: fadeUp 1s 0.8s ease both;
+    }
+
+    .scroll-line {
+      width: 40px;
+      height: 1px;
+      background: rgba(245,240,232,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: var(--gold);
+      animation: slideLine 2s ease infinite;
+    }
+
+    @keyframes slideLine {
+      to { left: 200%; }
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      border-top: 1px solid rgba(201,168,76,0.15);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+      background: rgba(201,168,76,0.04);
+      overflow: hidden;
+      padding: 14px 0;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 0;
+      animation: marquee 20s linear infinite;
+      white-space: nowrap;
+    }
+
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 20px;
+      padding: 0 32px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.5);
+    }
+
+    .marquee-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--gold);
+      opacity: 0.4;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ── COURSES SECTION ── */
+    .section {
+      padding: 100px 48px;
+      position: relative;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 60px;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .section-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(36px, 5vw, 58px);
+      line-height: 1.1;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .course-card {
+      background: rgba(245,240,232,0.03);
+      border: 1px solid rgba(245,240,232,0.07);
+      padding: 44px 36px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s, border-color 0.4s;
+      cursor: default;
+      group: true;
+    }
+
+    .course-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      transform: scaleX(0);
+      transition: transform 0.5s ease;
+    }
+
+    .course-card:hover {
+      background: rgba(201,168,76,0.05);
+      border-color: rgba(201,168,76,0.25);
+    }
+
+    .course-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .course-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 72px;
+      color: rgba(201,168,76,0.08);
+      line-height: 1;
+      position: absolute;
+      top: 16px;
+      right: 24px;
+      transition: color 0.4s;
+    }
+
+    .course-card:hover .course-num {
+      color: rgba(201,168,76,0.15);
+    }
+
+    .course-icon {
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      font-size: 18px;
+    }
+
+    .course-card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .course-card p {
+      font-size: 14px;
+      color: rgba(245,240,232,0.5);
+      line-height: 1.8;
+      font-weight: 400;
+    }
+
+    .course-arrow {
+      margin-top: 32px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity 0.3s, transform 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .course-card:hover .course-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ── ABOUT ── */
+    .about-section {
+      padding: 100px 48px;
+      position: relative;
+    }
+
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-visual {
+      position: relative;
+    }
+
+    .about-box {
+      background: rgba(26,156,140,0.08);
+      border: 1px solid rgba(26,156,140,0.2);
+      padding: 60px 48px;
+      position: relative;
+      clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
+    }
+
+    .about-box::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 24px; height: 24px;
+      background: var(--teal);
+      clip-path: polygon(0 0, 100% 100%, 100% 0);
+    }
+
+    .about-big-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 96px;
+      line-height: 1;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+
+    .about-num-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.4);
+      margin-bottom: 40px;
+    }
+
+    .about-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      background: rgba(245,240,232,0.06);
+      border: 1px solid rgba(245,240,232,0.1);
+      padding: 7px 16px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.5);
+      border-radius: 100px;
+    }
+
+    .about-content .section-tag { margin-bottom: 16px; }
+
+    .about-content h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(32px, 4vw, 48px);
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+
+    .about-content h2 em { font-style: italic; color: var(--teal); }
+
+    .about-content p {
+      font-size: 15px;
+      color: rgba(245,240,232,0.55);
+      line-height: 1.9;
+      margin-bottom: 16px;
+    }
+
+    .divider-line {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent);
+      margin: 0;
+    }
+
+    /* ── CONTACT ── */
+    .contact-section {
+      padding: 100px 48px;
+      position: relative;
+    }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .contact-info h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(36px, 4vw, 52px);
+      line-height: 1.1;
+      margin-top: 16px;
+      margin-bottom: 28px;
+    }
+
+    .contact-info h2 em { font-style: italic; color: var(--gold); }
+
+    .contact-info p {
+      font-size: 15px;
+      color: rgba(245,240,232,0.5);
+      line-height: 1.9;
+    }
+
+    .contact-detail {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contact-detail-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: rgba(245,240,232,0.5);
+    }
+
+    .contact-detail-item span {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .form-field {
+      position: relative;
+      border-bottom: 1px solid rgba(245,240,232,0.1);
+      transition: border-color 0.3s;
+    }
+
+    .form-field:focus-within {
+      border-color: var(--gold);
+    }
+
+    .form-field input,
+    .form-field textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 22px 0;
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      color: var(--cream);
+      resize: none;
+    }
+
+    .form-field::placeholder,
+    .form-field input::placeholder,
+    .form-field textarea::placeholder {
+      color: rgba(245,240,232,0.25);
+    }
+
+    .form-field label {
+      position: absolute;
+      top: 22px; left: 0;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.3);
+      pointer-events: none;
+      transition: top 0.2s, font-size 0.2s, color 0.2s;
+    }
+
+    .form-field input:focus ~ label,
+    .form-field input:not(:placeholder-shown) ~ label,
+    .form-field textarea:focus ~ label,
+    .form-field textarea:not(:placeholder-shown) ~ label {
+      top: 4px;
+      font-size: 9px;
+      color: var(--gold);
+    }
+
+    .form-field input, .form-field textarea {
+      padding-top: 28px;
+      padding-bottom: 12px;
+    }
+
+    .form-submit {
+      margin-top: 40px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid rgba(245,240,232,0.08);
+      padding: 36px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: var(--gold);
+    }
+
+    .footer-logo span { color: rgba(245,240,232,0.4); }
+
+    .footer-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: rgba(245,240,232,0.2);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero { padding: 120px 24px 80px; }
+      .hero-stat { display: none; }
+      .section, .about-section, .contact-section { padding: 70px 24px; }
+      .course-grid { grid-template-columns: 1fr; }
+      .about-inner, .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+      footer { padding: 28px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">TJ<span> Academy</span></div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+
+    <div class="hero-eyebrow">Est. 2026 — Lahore, Pakistan</div>
+
+    <h1>Learn Skills<br>for the <em>Future.</em></h1>
+
+    <p class="hero-sub">TJ Academy equips you with real-world digital skills — from code to design — so you can build, create, and earn.</p>
+
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="document.getElementById('courses').scrollIntoView({behavior:'smooth'})">Explore Courses</button>
+      <a href="#about" class="btn-ghost">Our Story</a>
+    </div>
+
+    <div class="hero-stat">
+      <div class="num">3+</div>
+      <div class="label">Disciplines</div>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      Scroll
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <!-- repeated for seamless loop -->
+      <div class="marquee-item">Web Development <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Python Programming <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Graphic Design <span class="marquee-dot"></span></div>
+      <div class="marquee-item">UI / UX <span class="marquee-dot"></span></div>
+      <div class="marquee-item">AI & Automation <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Freelancing Skills <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Web Development <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Python Programming <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Graphic Design <span class="marquee-dot"></span></div>
+      <div class="marquee-item">UI / UX <span class="marquee-dot"></span></div>
+      <div class="marquee-item">AI & Automation <span class="marquee-dot"></span></div>
+      <div class="marquee-item">Freelancing Skills <span class="marquee-dot"></span></div>
+    </div>
+  </div>
+
+  <!-- COURSES -->
+  <section class="section" id="courses">
+    <div class="section-header reveal">
+      <div>
+        <div class="section-tag">What We Teach</div>
+        <h2 class="section-title">Our <em>Courses</em></h2>
+      </div>
+      <p style="max-width:320px; font-size:14px; color:rgba(245,240,232,0.4); line-height:1.8;">
+        Hands-on programs built around skills the world is actively hiring for.
+      </p>
+    </div>
+
+    <div class="course-grid">
+
+      <div class="course-card reveal">
+        <div class="course-num">01</div>
+        <div class="course-icon">🌐</div>
+        <h3>Web Development</h3>
+        <p>Master HTML, CSS, and JavaScript. Build real websites from scratch and launch them to the world.</p>
+        <div class="course-arrow">Explore → </div>
+      </div>
+
+      <div class="course-card reveal" style="transition-delay:0.1s">
+        <div class="course-num">02</div>
+        <div class="course-icon">🐍</div>
+        <h3>Python Programming</h3>
+        <p>Learn the language of automation and AI. Write scripts, build tools, and start solving real problems.</p>
+        <div class="course-arrow">Explore → </div>
+      </div>
+
+      <div class="course-card reveal" style="transition-delay:0.2s">
+        <div class="course-num">03</div>
+        <div class="course-icon">✏️</div>
+        <h3>Graphic Design</h3>
+        <p>Create stunning visuals with Photoshop and Illustrator. Build a portfolio clients will pay for.</p>
+        <div class="course-arrow">Explore → </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- ABOUT -->
+  <section class="about-section" id="about">
+    <div class="about-inner">
+
+      <div class="about-visual reveal">
+        <div class="about-box">
+          <div class="about-big-num">100%</div>
+          <div class="about-num-label">Practical, project-based learning</div>
+          <div class="about-pills">
+            <span class="pill">Beginner Friendly</span>
+            <span class="pill">Real Projects</span>
+            <span class="pill">Portfolio Ready</span>
+            <span class="pill">Earn Online</span>
+            <span class="pill">Expert Mentors</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-content reveal">
+        <div class="section-tag">Who We Are</div>
+        <h2>Skills that <em>actually</em> open doors.</h2>
+        <p>TJ Academy was founded with a simple mission: make career-changing skills accessible. We don't just teach theory — every course is built around what the market demands right now.</p>
+        <p>Whether you're a student, a career-changer, or an aspiring freelancer, we give you the tools, the practice, and the mentorship to move forward with confidence.</p>
+        <div style="margin-top:36px;">
+          <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get in Touch</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="contact-inner">
+
+      <div class="contact-info reveal">
+        <div class="section-tag">Reach Out</div>
+        <h2>Let's start a <em>conversation.</em></h2>
+        <p>Have a question about our courses? Ready to enroll? We'd love to hear from you.</p>
+        <div class="contact-detail">
+          <div class="contact-detail-item"><span></span> info@tjacademy.pk</div>
+          <div class="contact-detail-item"><span></span> Lahore, Pakistan</div>
+          <div class="contact-detail-item"><span></span> Mon – Sat, 9am – 6pm</div>
+        </div>
+      </div>
+
+      <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+        <div class="form-field">
+          <input type="text" id="name" placeholder=" " required>
+          <label for="name">Your Name</label>
+        </div>
+        <div class="form-field">
+          <input type="email" id="email" placeholder=" " required>
+          <label for="email">Email Address</label>
+        </div>
+        <div class="form-field">
+          <textarea id="msg" rows="4" placeholder=" "></textarea>
+          <label for="msg">Your Message</label>
+        </div>
+        <div class="form-submit">
+          <button type="submit" class="btn-primary" id="submitBtn">Send Message</button>
+        </div>
+      </form>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">TJ<span> Academy</span></div>
+    <div class="footer-copy">© 2026 TJ Academy. All rights reserved.</div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    reveals.forEach(el => io.observe(el));
+
+    // Form submit
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.textContent = 'Sending…';
+      btn.style.opacity = '0.6';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = 'Sent ✓';
+        btn.style.background = '#1a9c8c';
+        btn.style.opacity = '1';
+      }, 1200);
+    }
+  </script>
+
+</body>
+</html>
+
