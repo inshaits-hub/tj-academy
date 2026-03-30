@@ -5,24 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TJ Academy</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
-
   <style>
     :root {
-      --ink: #0a0a0f;
+      --ink: #f4a6d6;
       --cream: #f5f0e8;
       --gold: #c9a84c;
       --gold-light: #e8d4a0;
       --teal: #1a9c8c;
       --teal-dark: #0f6b5e;
-      --rust: #c0392b;
-      --mist: #e8edf5;
     }
 
-    *, *::before, *::after {
-      margin: 0; padding: 0;
-      box-sizing: border-box;
-    }
-
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
 
     body {
@@ -30,9 +23,9 @@
       color: var(--cream);
       font-family: 'Syne', sans-serif;
       overflow-x: hidden;
+      min-height: 100vh;
     }
 
-    /* ── NOISE OVERLAY ── */
     body::before {
       content: '';
       position: fixed;
@@ -52,7 +45,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 18px 48px;
-      background: rgba(10,10,15,0.85);
+      background: rgba(10,10,15,0.9);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(201,168,76,0.15);
     }
@@ -61,12 +54,9 @@
       font-family: 'DM Serif Display', serif;
       font-size: 22px;
       color: var(--gold);
-      letter-spacing: 0.5px;
+      cursor: pointer;
     }
-
-    .nav-logo span {
-      color: var(--cream);
-    }
+    .nav-logo span { color: var(--cream); }
 
     .nav-links {
       display: flex;
@@ -82,25 +72,75 @@
       color: rgba(245,240,232,0.6);
       text-decoration: none;
       transition: color 0.25s;
+      cursor: pointer;
       position: relative;
     }
 
     .nav-links a::after {
       content: '';
       position: absolute;
-      bottom: -4px;
-      left: 0; right: 0;
+      bottom: -4px; left: 0; right: 0;
       height: 1px;
       background: var(--gold);
       transform: scaleX(0);
       transform-origin: left;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s;
     }
 
-    .nav-links a:hover { color: var(--gold); }
-    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
 
-    /* ── HERO ── */
+    /* ── PAGES ── */
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding-top: 80px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .page.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── BUTTONS ── */
+    .btn-primary {
+      background: var(--gold);
+      color: var(--ink);
+      border: none;
+      padding: 14px 32px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+      transition: background 0.25s, transform 0.2s;
+      font-weight: 700;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid rgba(245,240,232,0.2);
+      color: var(--cream);
+      padding: 13px 28px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.25s, color 0.25s;
+      display: inline-block;
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ══════════════════════════════
+       HOME PAGE
+    ══════════════════════════════ */
     .hero {
       min-height: 100vh;
       display: flex;
@@ -120,7 +160,6 @@
         var(--ink);
     }
 
-    /* Decorative grid lines */
     .hero-bg::before {
       content: '';
       position: absolute;
@@ -142,15 +181,8 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      animation: fadeUp 0.8s ease both;
     }
-
-    .hero-eyebrow::before {
-      content: '';
-      width: 32px;
-      height: 1px;
-      background: var(--gold);
-    }
+    .hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
 
     .hero h1 {
       font-family: 'DM Serif Display', serif;
@@ -158,13 +190,8 @@
       line-height: 1.0;
       max-width: 800px;
       position: relative;
-      animation: fadeUp 0.8s 0.15s ease both;
     }
-
-    .hero h1 em {
-      font-style: italic;
-      color: var(--gold);
-    }
+    .hero h1 em { font-style: italic; color: var(--gold); }
 
     .hero-sub {
       margin-top: 28px;
@@ -172,8 +199,6 @@
       color: rgba(245,240,232,0.55);
       max-width: 420px;
       line-height: 1.8;
-      font-weight: 400;
-      animation: fadeUp 0.8s 0.3s ease both;
     }
 
     .hero-cta {
@@ -181,110 +206,29 @@
       display: flex;
       gap: 16px;
       align-items: center;
-      animation: fadeUp 0.8s 0.45s ease both;
     }
 
-    .btn-primary {
-      background: var(--gold);
-      color: var(--ink);
-      border: none;
-      padding: 14px 32px;
-      font-family: 'Space Mono', monospace;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
-      transition: background 0.25s, transform 0.2s;
-      font-weight: 700;
-    }
-
-    .btn-primary:hover {
-      background: var(--gold-light);
-      transform: translateY(-2px);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      border: 1px solid rgba(245,240,232,0.2);
-      color: var(--cream);
-      padding: 13px 28px;
-      font-family: 'Space Mono', monospace;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      text-decoration: none;
-      transition: border-color 0.25s, color 0.25s;
-    }
-
-    .btn-ghost:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-
-    /* Floating badge */
     .hero-stat {
       position: absolute;
       right: 80px;
       bottom: 120px;
       text-align: right;
-      animation: fadeUp 0.9s 0.6s ease both;
     }
-
     .hero-stat .num {
       font-family: 'DM Serif Display', serif;
       font-size: 72px;
-      color: rgba(201,168,76,0.15);
+      color: rgba(201,168,76,0.12);
       line-height: 1;
     }
-
     .hero-stat .label {
       font-family: 'Space Mono', monospace;
       font-size: 10px;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: rgba(245,240,232,0.3);
+      color: rgba(245,240,232,0.25);
     }
 
-    /* Scroll hint */
-    .scroll-hint {
-      position: absolute;
-      bottom: 40px;
-      left: 48px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: rgba(245,240,232,0.3);
-      animation: fadeUp 1s 0.8s ease both;
-    }
-
-    .scroll-line {
-      width: 40px;
-      height: 1px;
-      background: rgba(245,240,232,0.2);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .scroll-line::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: var(--gold);
-      animation: slideLine 2s ease infinite;
-    }
-
-    @keyframes slideLine {
-      to { left: 200%; }
-    }
-
-    /* ── MARQUEE ── */
+    /* Marquee */
     .marquee-wrap {
       border-top: 1px solid rgba(201,168,76,0.15);
       border-bottom: 1px solid rgba(201,168,76,0.15);
@@ -292,14 +236,11 @@
       overflow: hidden;
       padding: 14px 0;
     }
-
     .marquee-track {
       display: flex;
-      gap: 0;
       animation: marquee 20s linear infinite;
       white-space: nowrap;
     }
-
     .marquee-item {
       display: inline-flex;
       align-items: center;
@@ -311,36 +252,38 @@
       text-transform: uppercase;
       color: rgba(201,168,76,0.5);
     }
+    .marquee-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); opacity: 0.4; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-    .marquee-dot {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--gold);
-      opacity: 0.4;
+    /* Home features */
+    .home-features {
+      padding: 80px 48px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
     }
 
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
+    .feature-card {
+      padding: 40px 32px;
+      border: 1px solid rgba(245,240,232,0.07);
+      background: rgba(245,240,232,0.02);
+      transition: background 0.3s, border-color 0.3s;
     }
+    .feature-card:hover { background: rgba(201,168,76,0.05); border-color: rgba(201,168,76,0.2); }
 
-    /* ── COURSES SECTION ── */
-    .section {
-      padding: 100px 48px;
+    .feature-icon { font-size: 32px; margin-bottom: 16px; }
+    .feature-card h3 { font-family: 'DM Serif Display', serif; font-size: 20px; margin-bottom: 10px; }
+    .feature-card p { font-size: 14px; color: rgba(245,240,232,0.45); line-height: 1.8; }
+
+    /* ══════════════════════════════
+       COURSES PAGE
+    ══════════════════════════════ */
+    .page-header {
+      padding: 60px 48px 40px;
       position: relative;
     }
 
-    .section-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 60px;
-      flex-wrap: wrap;
-      gap: 24px;
-    }
-
-    .section-tag {
+    .page-tag {
       font-family: 'Space Mono', monospace;
       font-size: 10px;
       letter-spacing: 4px;
@@ -349,34 +292,37 @@
       margin-bottom: 12px;
     }
 
-    .section-title {
+    .page-title {
       font-family: 'DM Serif Display', serif;
-      font-size: clamp(36px, 5vw, 58px);
+      font-size: clamp(36px, 5vw, 64px);
       line-height: 1.1;
     }
+    .page-title em { font-style: italic; color: var(--gold); }
 
-    .section-title em {
-      font-style: italic;
-      color: var(--gold);
+    .page-subtitle {
+      margin-top: 16px;
+      font-size: 15px;
+      color: rgba(245,240,232,0.45);
+      max-width: 480px;
+      line-height: 1.8;
     }
 
-    .course-grid {
+    .courses-grid {
+      padding: 0 48px 80px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
+      gap: 20px;
     }
 
     .course-card {
       background: rgba(245,240,232,0.03);
-      border: 1px solid rgba(245,240,232,0.07);
-      padding: 44px 36px;
+      border: 1px solid rgba(245,240,232,0.08);
+      padding: 40px 32px;
       position: relative;
       overflow: hidden;
-      transition: background 0.4s, border-color 0.4s;
-      cursor: default;
-      group: true;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+      cursor: pointer;
     }
-
     .course-card::before {
       content: '';
       position: absolute;
@@ -384,104 +330,217 @@
       width: 100%; height: 2px;
       background: linear-gradient(90deg, transparent, var(--gold), transparent);
       transform: scaleX(0);
-      transition: transform 0.5s ease;
+      transition: transform 0.4s;
     }
-
-    .course-card:hover {
-      background: rgba(201,168,76,0.05);
-      border-color: rgba(201,168,76,0.25);
-    }
-
-    .course-card:hover::before {
-      transform: scaleX(1);
-    }
+    .course-card:hover { background: rgba(201,168,76,0.06); border-color: rgba(201,168,76,0.3); transform: translateY(-4px); }
+    .course-card:hover::before { transform: scaleX(1); }
 
     .course-num {
       font-family: 'DM Serif Display', serif;
-      font-size: 72px;
+      font-size: 64px;
       color: rgba(201,168,76,0.08);
       line-height: 1;
       position: absolute;
-      top: 16px;
-      right: 24px;
-      transition: color 0.4s;
-    }
-
-    .course-card:hover .course-num {
-      color: rgba(201,168,76,0.15);
+      top: 12px; right: 20px;
     }
 
     .course-icon {
-      width: 44px;
-      height: 44px;
+      width: 44px; height: 44px;
       border: 1px solid rgba(201,168,76,0.3);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
       font-size: 18px;
     }
 
-    .course-card h3 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 24px;
-      margin-bottom: 12px;
-      line-height: 1.2;
+    .course-card h3 { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 10px; }
+    .course-card p { font-size: 13px; color: rgba(245,240,232,0.5); line-height: 1.8; margin-bottom: 20px; }
+
+    .course-duration {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.6);
+      margin-bottom: 24px;
     }
 
-    .course-card p {
-      font-size: 14px;
-      color: rgba(245,240,232,0.5);
-      line-height: 1.8;
-      font-weight: 400;
-    }
-
-    .course-arrow {
-      margin-top: 32px;
+    .course-enroll {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       font-family: 'Space Mono', monospace;
       font-size: 11px;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--gold);
-      opacity: 0;
-      transform: translateX(-8px);
-      transition: opacity 0.3s, transform 0.3s;
+      border: 1px solid rgba(201,168,76,0.3);
+      padding: 10px 18px;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .course-card:hover .course-enroll { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+
+    /* ══════════════════════════════
+       REGISTRATION MODAL
+    ══════════════════════════════ */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: #0f0f16;
+      border: 1px solid rgba(201,168,76,0.2);
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+      animation: modalIn 0.3s ease;
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 20px; height: 20px;
+      background: var(--gold);
+      clip-path: polygon(0 0, 100% 100%, 100% 0);
+    }
+
+    .modal-header {
+      padding: 36px 40px 24px;
+      border-bottom: 1px solid rgba(245,240,232,0.08);
+    }
+
+    .modal-course-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .modal-header h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+    }
+    .modal-header h2 em { font-style: italic; color: var(--gold); }
+
+    .modal-close {
+      position: absolute;
+      top: 20px; right: 24px;
+      background: none;
+      border: 1px solid rgba(245,240,232,0.15);
+      color: rgba(245,240,232,0.5);
+      width: 32px; height: 32px;
+      cursor: pointer;
+      font-size: 16px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: center;
+      transition: border-color 0.2s, color 0.2s;
     }
+    .modal-close:hover { border-color: var(--gold); color: var(--gold); }
 
-    .course-card:hover .course-arrow {
-      opacity: 1;
-      transform: translateX(0);
-    }
+    .modal-body { padding: 28px 40px 40px; }
 
-    /* ── ABOUT ── */
-    .about-section {
-      padding: 100px 48px;
+    .reg-form { display: flex; flex-direction: column; gap: 0; }
+
+    .form-field {
       position: relative;
+      border-bottom: 1px solid rgba(245,240,232,0.1);
+      transition: border-color 0.3s;
+      margin-bottom: 4px;
+    }
+    .form-field:focus-within { border-color: var(--gold); }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 28px 0 10px;
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      color: var(--cream);
+      resize: none;
     }
 
+    .form-field select option { background: #0f0f16; color: var(--cream); }
+
+    .form-field label {
+      position: absolute;
+      top: 18px; left: 0;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.3);
+      pointer-events: none;
+      transition: top 0.2s, font-size 0.2s, color 0.2s;
+    }
+
+    .form-field input:focus ~ label,
+    .form-field input:not(:placeholder-shown) ~ label,
+    .form-field select:focus ~ label,
+    .form-field textarea:focus ~ label,
+    .form-field textarea:not(:placeholder-shown) ~ label {
+      top: 6px;
+      font-size: 8px;
+      color: var(--gold);
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    .form-submit { margin-top: 32px; }
+
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 32px;
+    }
+    .success-msg .check { font-size: 48px; margin-bottom: 16px; }
+    .success-msg h3 { font-family: 'DM Serif Display', serif; font-size: 26px; margin-bottom: 10px; color: var(--teal); }
+    .success-msg p { font-size: 14px; color: rgba(245,240,232,0.5); line-height: 1.8; }
+
+    /* ══════════════════════════════
+       ABOUT PAGE
+    ══════════════════════════════ */
     .about-inner {
+      padding: 20px 48px 80px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 80px;
       align-items: center;
     }
 
-    .about-visual {
-      position: relative;
-    }
-
     .about-box {
-      background: rgba(26,156,140,0.08);
+      background: rgba(26,156,140,0.06);
       border: 1px solid rgba(26,156,140,0.2);
-      padding: 60px 48px;
+      padding: 56px 44px;
       position: relative;
       clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
     }
-
     .about-box::before {
       content: '';
       position: absolute;
@@ -493,71 +552,78 @@
 
     .about-big-num {
       font-family: 'DM Serif Display', serif;
-      font-size: 96px;
+      font-size: 88px;
       line-height: 1;
       color: var(--teal);
       margin-bottom: 8px;
     }
-
     .about-num-label {
       font-family: 'Space Mono', monospace;
-      font-size: 11px;
+      font-size: 10px;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: rgba(245,240,232,0.4);
-      margin-bottom: 40px;
+      color: rgba(245,240,232,0.35);
+      margin-bottom: 36px;
     }
 
-    .about-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
+    .about-pills { display: flex; flex-wrap: wrap; gap: 10px; }
     .pill {
-      background: rgba(245,240,232,0.06);
+      background: rgba(245,240,232,0.05);
       border: 1px solid rgba(245,240,232,0.1);
-      padding: 7px 16px;
+      padding: 7px 14px;
       font-family: 'Space Mono', monospace;
-      font-size: 10px;
+      font-size: 9px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: rgba(245,240,232,0.5);
+      color: rgba(245,240,232,0.45);
       border-radius: 100px;
     }
 
-    .about-content .section-tag { margin-bottom: 16px; }
-
     .about-content h2 {
       font-family: 'DM Serif Display', serif;
-      font-size: clamp(32px, 4vw, 48px);
+      font-size: clamp(30px, 4vw, 46px);
       line-height: 1.15;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
-
     .about-content h2 em { font-style: italic; color: var(--teal); }
-
     .about-content p {
       font-size: 15px;
-      color: rgba(245,240,232,0.55);
+      color: rgba(245,240,232,0.5);
       line-height: 1.9;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
-    .divider-line {
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent);
-      margin: 0;
+    .team-grid {
+      padding: 0 48px 80px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
     }
 
-    /* ── CONTACT ── */
-    .contact-section {
-      padding: 100px 48px;
-      position: relative;
+    .team-card {
+      border: 1px solid rgba(245,240,232,0.07);
+      padding: 32px;
+      text-align: center;
+      background: rgba(245,240,232,0.02);
     }
+    .team-avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal), var(--gold));
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    .team-card h4 { font-family: 'DM Serif Display', serif; font-size: 18px; margin-bottom: 6px; }
+    .team-card p { font-size: 12px; color: rgba(245,240,232,0.4); font-family: 'Space Mono', monospace; letter-spacing: 1px; }
 
+    /* ══════════════════════════════
+       CONTACT PAGE
+    ══════════════════════════════ */
     .contact-inner {
+      padding: 20px 48px 80px;
       display: grid;
       grid-template-columns: 1fr 1.2fr;
       gap: 80px;
@@ -566,27 +632,14 @@
 
     .contact-info h2 {
       font-family: 'DM Serif Display', serif;
-      font-size: clamp(36px, 4vw, 52px);
+      font-size: clamp(32px, 4vw, 48px);
       line-height: 1.1;
-      margin-top: 16px;
-      margin-bottom: 28px;
+      margin-bottom: 20px;
     }
-
     .contact-info h2 em { font-style: italic; color: var(--gold); }
+    .contact-info p { font-size: 15px; color: rgba(245,240,232,0.5); line-height: 1.9; }
 
-    .contact-info p {
-      font-size: 15px;
-      color: rgba(245,240,232,0.5);
-      line-height: 1.9;
-    }
-
-    .contact-detail {
-      margin-top: 40px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
+    .contact-details { margin-top: 40px; display: flex; flex-direction: column; gap: 16px; }
     .contact-detail-item {
       display: flex;
       align-items: center;
@@ -595,7 +648,6 @@
       font-size: 12px;
       color: rgba(245,240,232,0.5);
     }
-
     .contact-detail-item span {
       width: 6px; height: 6px;
       border-radius: 50%;
@@ -603,329 +655,422 @@
       flex-shrink: 0;
     }
 
-    .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
+    .contact-form { display: flex; flex-direction: column; }
 
-    .form-field {
-      position: relative;
-      border-bottom: 1px solid rgba(245,240,232,0.1);
-      transition: border-color 0.3s;
-    }
-
-    .form-field:focus-within {
-      border-color: var(--gold);
-    }
-
-    .form-field input,
-    .form-field textarea {
-      width: 100%;
-      background: transparent;
-      border: none;
-      outline: none;
-      padding: 22px 0;
-      font-family: 'Syne', sans-serif;
-      font-size: 15px;
-      color: var(--cream);
-      resize: none;
-    }
-
-    .form-field::placeholder,
-    .form-field input::placeholder,
-    .form-field textarea::placeholder {
-      color: rgba(245,240,232,0.25);
-    }
-
-    .form-field label {
-      position: absolute;
-      top: 22px; left: 0;
-      font-family: 'Space Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: rgba(245,240,232,0.3);
-      pointer-events: none;
-      transition: top 0.2s, font-size 0.2s, color 0.2s;
-    }
-
-    .form-field input:focus ~ label,
-    .form-field input:not(:placeholder-shown) ~ label,
-    .form-field textarea:focus ~ label,
-    .form-field textarea:not(:placeholder-shown) ~ label {
-      top: 4px;
-      font-size: 9px;
-      color: var(--gold);
-    }
-
-    .form-field input, .form-field textarea {
-      padding-top: 28px;
-      padding-bottom: 12px;
-    }
-
-    .form-submit {
-      margin-top: 40px;
-    }
+    /* ── DIVIDER ── */
+    .divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent); }
 
     /* ── FOOTER ── */
     footer {
       border-top: 1px solid rgba(245,240,232,0.08);
-      padding: 36px 48px;
+      padding: 32px 48px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
     }
-
-    .footer-logo {
-      font-family: 'DM Serif Display', serif;
-      font-size: 20px;
-      color: var(--gold);
-    }
-
+    .footer-logo { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--gold); cursor: pointer; }
     .footer-logo span { color: rgba(245,240,232,0.4); }
+    .footer-copy { font-family: 'Space Mono', monospace; font-size: 11px; color: rgba(245,240,232,0.2); }
 
-    .footer-copy {
-      font-family: 'Space Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 1px;
-      color: rgba(245,240,232,0.2);
-    }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+    /* ── SECTION DIVIDER ── */
+    .section-divider {
+      padding: 0 48px;
+      margin-bottom: 48px;
     }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       nav { padding: 16px 24px; }
-      .nav-links { display: none; }
-      .hero { padding: 120px 24px 80px; }
+      .nav-links { gap: 16px; }
+      .nav-links a { font-size: 9px; letter-spacing: 1px; }
+      .hero { padding: 120px 24px 60px; }
       .hero-stat { display: none; }
-      .section, .about-section, .contact-section { padding: 70px 24px; }
-      .course-grid { grid-template-columns: 1fr; }
-      .about-inner, .contact-inner { grid-template-columns: 1fr; gap: 48px; }
-      footer { padding: 28px 24px; }
+      .home-features, .courses-grid, .team-grid { grid-template-columns: 1fr; padding: 0 24px 60px; }
+      .page-header { padding: 40px 24px 24px; }
+      .about-inner, .contact-inner { grid-template-columns: 1fr; gap: 40px; padding: 20px 24px 60px; }
+      footer { padding: 24px; }
+      .modal-body, .modal-header { padding: 24px; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
+  <!-- ── NAV ── -->
   <nav>
-    <div class="nav-logo">TJ<span> Academy</span></div>
+    <div class="nav-logo" onclick="showPage('home')">TJ<span> Academy</span></div>
     <ul class="nav-links">
-      <li><a href="#">Home</a></li>
-      <li><a href="#courses">Courses</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
+      <li><a onclick="showPage('courses')" id="nav-courses">Courses</a></li>
+      <li><a onclick="showPage('about')" id="nav-about">About</a></li>
+      <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
     </ul>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg"></div>
+  <!-- ══════════════════════════════
+       HOME PAGE
+  ══════════════════════════════ -->
+  <div class="page active" id="page-home">
 
-    <div class="hero-eyebrow">Est. 2026 — Lahore, Pakistan</div>
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-eyebrow">Est. 2026 — Lahore, Pakistan</div>
+      <h1>Learn Skills<br>for the <em>Future.</em></h1>
+      <p class="hero-sub">TJ Academy equips you with real-world digital skills — from code to design — so you can build, create, and earn.</p>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="showPage('courses')">Explore Courses</button>
+        <button class="btn-ghost" onclick="showPage('about')">Our Story</button>
+      </div>
+      <div class="hero-stat">
+        <div class="num">3+</div>
+        <div class="label">Disciplines</div>
+      </div>
+    </section>
 
-    <h1>Learn Skills<br>for the <em>Future.</em></h1>
-
-    <p class="hero-sub">TJ Academy equips you with real-world digital skills — from code to design — so you can build, create, and earn.</p>
-
-    <div class="hero-cta">
-      <button class="btn-primary" onclick="document.getElementById('courses').scrollIntoView({behavior:'smooth'})">Explore Courses</button>
-      <a href="#about" class="btn-ghost">Our Story</a>
+    <div class="marquee-wrap">
+      <div class="marquee-track">
+        <div class="marquee-item">Web Development <span class="marquee-dot"></span></div>
+        <div class="marquee-item">Python Programming <span class="marquee-dot"></span></div>
+        <div class="marquee-item">Graphic Design <span class="marquee-dot"></span></div>
+        <div class="marquee-item">UI / UX <span class="marquee-dot"></span></div>
+        <div class="marquee-item">AI & Automation <span class="marquee-dot"></span></div>
+        <div class="marquee-item">Freelancing Skills <span class="marquee-dot"></span></div>
+        <div class="marquee-item">Web Development <span class="marquee-dot"></span></div>
+        <div class="marquee-item">Python Programming <span class="marquee-dot"></span></div>
+        <div class="marquee-item">Graphic Design <span class="marquee-dot"></span></div>
+        <div class="marquee-item">UI / UX <span class="marquee-dot"></span></div>
+        <div class="marquee-item">AI & Automation <span class="marquee-dot"></span></div>
+        <div class="marquee-item">Freelancing Skills <span class="marquee-dot"></span></div>
+      </div>
     </div>
 
-    <div class="hero-stat">
-      <div class="num">3+</div>
-      <div class="label">Disciplines</div>
+    <div class="home-features">
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Project-Based</h3>
+        <p>Every course is built around real projects you can add to your portfolio immediately.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👨‍🏫</div>
+        <h3>Expert Mentors</h3>
+        <p>Learn from professionals who are actively working in their fields.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <h3>Earn Online</h3>
+        <p>We teach you skills that freelance markets are actively paying for right now.</p>
+      </div>
     </div>
 
-    <div class="scroll-hint">
-      <div class="scroll-line"></div>
-      Scroll
-    </div>
-  </section>
+    <div class="divider"></div>
+    <footer>
+      <div class="footer-logo" onclick="showPage('home')">TJ<span> Academy</span></div>
+      <div class="footer-copy">© 2026 TJ Academy. All rights reserved.</div>
+    </footer>
 
-  <!-- MARQUEE -->
-  <div class="marquee-wrap">
-    <div class="marquee-track">
-      <!-- repeated for seamless loop -->
-      <div class="marquee-item">Web Development <span class="marquee-dot"></span></div>
-      <div class="marquee-item">Python Programming <span class="marquee-dot"></span></div>
-      <div class="marquee-item">Graphic Design <span class="marquee-dot"></span></div>
-      <div class="marquee-item">UI / UX <span class="marquee-dot"></span></div>
-      <div class="marquee-item">AI & Automation <span class="marquee-dot"></span></div>
-      <div class="marquee-item">Freelancing Skills <span class="marquee-dot"></span></div>
-      <div class="marquee-item">Web Development <span class="marquee-dot"></span></div>
-      <div class="marquee-item">Python Programming <span class="marquee-dot"></span></div>
-      <div class="marquee-item">Graphic Design <span class="marquee-dot"></span></div>
-      <div class="marquee-item">UI / UX <span class="marquee-dot"></span></div>
-      <div class="marquee-item">AI & Automation <span class="marquee-dot"></span></div>
-      <div class="marquee-item">Freelancing Skills <span class="marquee-dot"></span></div>
-    </div>
   </div>
 
-  <!-- COURSES -->
-  <section class="section" id="courses">
-    <div class="section-header reveal">
-      <div>
-        <div class="section-tag">What We Teach</div>
-        <h2 class="section-title">Our <em>Courses</em></h2>
-      </div>
-      <p style="max-width:320px; font-size:14px; color:rgba(245,240,232,0.4); line-height:1.8;">
-        Hands-on programs built around skills the world is actively hiring for.
-      </p>
+  <!-- ══════════════════════════════
+       COURSES PAGE
+  ══════════════════════════════ -->
+  <div class="page" id="page-courses">
+
+    <div class="page-header">
+      <div class="page-tag">What We Teach</div>
+      <h1 class="page-title">Our <em>Courses</em></h1>
+      <p class="page-subtitle">Click on any course to register. Hands-on programs built around skills the world is hiring for.</p>
     </div>
 
-    <div class="course-grid">
+    <div class="courses-grid">
 
-      <div class="course-card reveal">
+      <div class="course-card" onclick="openModal('Web Development', '🌐', '3 Months')">
         <div class="course-num">01</div>
         <div class="course-icon">🌐</div>
         <h3>Web Development</h3>
         <p>Master HTML, CSS, and JavaScript. Build real websites from scratch and launch them to the world.</p>
-        <div class="course-arrow">Explore → </div>
+        <div class="course-duration">⏱ 3 Months · Beginner to Pro</div>
+        <div class="course-enroll">Register Now →</div>
       </div>
 
-      <div class="course-card reveal" style="transition-delay:0.1s">
+      <div class="course-card" onclick="openModal('Python Programming', '🐍', '2 Months')">
         <div class="course-num">02</div>
         <div class="course-icon">🐍</div>
         <h3>Python Programming</h3>
-        <p>Learn the language of automation and AI. Write scripts, build tools, and start solving real problems.</p>
-        <div class="course-arrow">Explore → </div>
+        <p>Learn the language of automation and AI. Write scripts, build tools, and solve real problems.</p>
+        <div class="course-duration">⏱ 2 Months · Beginner Friendly</div>
+        <div class="course-enroll">Register Now →</div>
       </div>
 
-      <div class="course-card reveal" style="transition-delay:0.2s">
+      <div class="course-card" onclick="openModal('Graphic Design', '✏️', '2 Months')">
         <div class="course-num">03</div>
         <div class="course-icon">✏️</div>
         <h3>Graphic Design</h3>
         <p>Create stunning visuals with Photoshop and Illustrator. Build a portfolio clients will pay for.</p>
-        <div class="course-arrow">Explore → </div>
+        <div class="course-duration">⏱ 2 Months · All Levels</div>
+        <div class="course-enroll">Register Now →</div>
       </div>
 
     </div>
-  </section>
 
-  <div class="divider-line"></div>
+    <div class="divider"></div>
+    <footer>
+      <div class="footer-logo" onclick="showPage('home')">TJ<span> Academy</span></div>
+      <div class="footer-copy">© 2026 TJ Academy. All rights reserved.</div>
+    </footer>
 
-  <!-- ABOUT -->
-  <section class="about-section" id="about">
+  </div>
+
+  <!-- ══════════════════════════════
+       ABOUT PAGE
+  ══════════════════════════════ -->
+  <div class="page" id="page-about">
+
+    <div class="page-header">
+      <div class="page-tag">Who We Are</div>
+      <h1 class="page-title">About <em>TJ Academy</em></h1>
+      <p class="page-subtitle">A learning platform built to make career-changing skills accessible to everyone.</p>
+    </div>
+
     <div class="about-inner">
-
-      <div class="about-visual reveal">
-        <div class="about-box">
-          <div class="about-big-num">100%</div>
-          <div class="about-num-label">Practical, project-based learning</div>
-          <div class="about-pills">
-            <span class="pill">Beginner Friendly</span>
-            <span class="pill">Real Projects</span>
-            <span class="pill">Portfolio Ready</span>
-            <span class="pill">Earn Online</span>
-            <span class="pill">Expert Mentors</span>
-          </div>
+      <div class="about-box">
+        <div class="about-big-num">100%</div>
+        <div class="about-num-label">Practical, project-based learning</div>
+        <div class="about-pills">
+          <span class="pill">Beginner Friendly</span>
+          <span class="pill">Real Projects</span>
+          <span class="pill">Portfolio Ready</span>
+          <span class="pill">Earn Online</span>
+          <span class="pill">Expert Mentors</span>
+          <span class="pill">Lahore Based</span>
         </div>
       </div>
-
-      <div class="about-content reveal">
-        <div class="section-tag">Who We Are</div>
+      <div class="about-content">
+        <div class="page-tag">Our Mission</div>
         <h2>Skills that <em>actually</em> open doors.</h2>
         <p>TJ Academy was founded with a simple mission: make career-changing skills accessible. We don't just teach theory — every course is built around what the market demands right now.</p>
         <p>Whether you're a student, a career-changer, or an aspiring freelancer, we give you the tools, the practice, and the mentorship to move forward with confidence.</p>
-        <div style="margin-top:36px;">
-          <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get in Touch</button>
+        <p>Based in Lahore, Pakistan, we believe world-class education shouldn't require a world-class budget.</p>
+        <div style="margin-top:32px;">
+          <button class="btn-primary" onclick="showPage('courses')">Browse Courses</button>
         </div>
       </div>
-
     </div>
-  </section>
 
-  <div class="divider-line"></div>
+    <div class="section-divider"><div class="divider"></div></div>
 
-  <!-- CONTACT -->
-  <section class="contact-section" id="contact">
+    <div style="padding: 0 48px; margin-bottom: 24px;">
+      <div class="page-tag">Our Team</div>
+      <h2 style="font-family:'DM Serif Display',serif; font-size:32px; margin-top:10px;">Meet the <em style="font-style:italic; color:var(--teal)">Mentors</em></h2>
+    </div>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">👨‍💻</div>
+        <h4>Tariq J.</h4>
+        <p>Web Development Lead</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👩‍🎨</div>
+        <h4>Sana M.</h4>
+        <p>Graphic Design Mentor</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👨‍🔬</div>
+        <h4>Bilal K.</h4>
+        <p>Python & AI Instructor</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <footer>
+      <div class="footer-logo" onclick="showPage('home')">TJ<span> Academy</span></div>
+      <div class="footer-copy">© 2026 TJ Academy. All rights reserved.</div>
+    </footer>
+
+  </div>
+
+  <!-- ══════════════════════════════
+       CONTACT PAGE
+  ══════════════════════════════ -->
+  <div class="page" id="page-contact">
+
+    <div class="page-header">
+      <div class="page-tag">Reach Out</div>
+      <h1 class="page-title">Let's <em>Talk</em></h1>
+      <p class="page-subtitle">Have a question about our courses? Ready to enroll? We'd love to hear from you.</p>
+    </div>
+
     <div class="contact-inner">
-
-      <div class="contact-info reveal">
-        <div class="section-tag">Reach Out</div>
-        <h2>Let's start a <em>conversation.</em></h2>
-        <p>Have a question about our courses? Ready to enroll? We'd love to hear from you.</p>
-        <div class="contact-detail">
-          <div class="contact-detail-item"><span></span> info@tjacademy.pk</div>
+      <div class="contact-info">
+        <h2>Get in <em>touch.</em></h2>
+        <p>Whether you have a question, want to know more about a course, or just want to say hello — drop us a message and we'll get back to you within 24 hours.</p>
+        <div class="contact-details">
+          <div class="contact-detail-item"><span></span> inshaits@gmail.com</div>
           <div class="contact-detail-item"><span></span> Lahore, Pakistan</div>
           <div class="contact-detail-item"><span></span> Mon – Sat, 9am – 6pm</div>
         </div>
       </div>
 
-      <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+      <form class="contact-form" onsubmit="handleContact(event)">
         <div class="form-field">
-          <input type="text" id="name" placeholder=" " required>
-          <label for="name">Your Name</label>
+          <input type="text" id="c-name" placeholder=" " required>
+          <label for="c-name">Your Name</label>
         </div>
         <div class="form-field">
-          <input type="email" id="email" placeholder=" " required>
-          <label for="email">Email Address</label>
+          <input type="email" id="c-email" placeholder=" " required>
+          <label for="c-email">Email Address</label>
         </div>
         <div class="form-field">
-          <textarea id="msg" rows="4" placeholder=" "></textarea>
-          <label for="msg">Your Message</label>
+          <input type="text" id="c-subject" placeholder=" ">
+          <label for="c-subject">Subject</label>
         </div>
-        <div class="form-submit">
-          <button type="submit" class="btn-primary" id="submitBtn">Send Message</button>
+        <div class="form-field">
+          <textarea id="c-msg" rows="4" placeholder=" "></textarea>
+          <label for="c-msg">Your Message</label>
+        </div>
+        <div class="form-submit" style="margin-top:32px;">
+          <button type="submit" class="btn-primary" id="contactBtn">Send Message</button>
         </div>
       </form>
-
     </div>
-  </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-logo">TJ<span> Academy</span></div>
-    <div class="footer-copy">© 2026 TJ Academy. All rights reserved.</div>
-  </footer>
+    <div class="divider"></div>
+    <footer>
+      <div class="footer-logo" onclick="showPage('home')">TJ<span> Academy</span></div>
+      <div class="footer-copy">© 2026 TJ Academy. All rights reserved.</div>
+    </footer>
+
+  </div>
+
+  <!-- ══════════════════════════════
+       REGISTRATION MODAL
+  ══════════════════════════════ -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+    <div class="modal" id="modal">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+
+      <div class="modal-header">
+        <div class="modal-course-tag" id="modalTag">Enroll Now</div>
+        <h2>Register for <em id="modalTitle">Course</em></h2>
+      </div>
+
+      <div class="modal-body">
+        <form class="reg-form" id="regForm" onsubmit="handleRegister(event)">
+          <div class="form-row">
+            <div class="form-field">
+              <input type="text" id="r-fname" placeholder=" " required>
+              <label for="r-fname">First Name</label>
+            </div>
+            <div class="form-field">
+              <input type="text" id="r-lname" placeholder=" " required>
+              <label for="r-lname">Last Name</label>
+            </div>
+          </div>
+          <div class="form-field">
+            <input type="email" id="r-email" placeholder=" " required>
+            <label for="r-email">Email Address</label>
+          </div>
+          <div class="form-field">
+            <input type="tel" id="r-phone" placeholder=" " required>
+            <label for="r-phone">Phone Number</label>
+          </div>
+          <div class="form-field">
+            <select id="r-level" required>
+              <option value="" disabled selected></option>
+              <option value="beginner">Beginner — No experience</option>
+              <option value="some">Some experience</option>
+              <option value="intermediate">Intermediate</option>
+            </select>
+            <label for="r-level">Your Experience Level</label>
+          </div>
+          <div class="form-field">
+            <textarea id="r-why" rows="3" placeholder=" "></textarea>
+            <label for="r-why">Why do you want to join? (optional)</label>
+          </div>
+          <div class="form-submit">
+            <button type="submit" class="btn-primary" style="width:100%;">Submit Registration</button>
+          </div>
+        </form>
+
+        <div class="success-msg" id="successMsg">
+          <div class="check">✅</div>
+          <h3>You're Registered!</h3>
+          <p>Thanks for registering. We'll reach out to you at your email within 24 hours with the next steps.</p>
+          <div style="margin-top:24px;">
+            <button class="btn-ghost" onclick="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
-    // Scroll reveal
-    const reveals = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.12 });
+    // ── PAGE NAVIGATION ──
+    function showPage(name) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      document.getElementById('nav-' + name).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-    reveals.forEach(el => io.observe(el));
+    // ── MODAL ──
+    function openModal(courseName, icon, duration) {
+      document.getElementById('modalTitle').textContent = courseName;
+      document.getElementById('modalTag').textContent = icon + ' ' + duration;
+      document.getElementById('regForm').style.display = 'flex';
+      document.getElementById('successMsg').style.display = 'none';
+      document.getElementById('regForm').reset();
+      document.getElementById('modalOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
 
-    // Form submit
-    function handleSubmit(e) {
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function closeModalOutside(e) {
+      if (e.target === document.getElementById('modalOverlay')) closeModal();
+    }
+
+    // ── REGISTRATION SUBMIT ──
+    function handleRegister(e) {
       e.preventDefault();
-      const btn = document.getElementById('submitBtn');
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.textContent = 'Submitting…';
+      btn.disabled = true;
+      setTimeout(() => {
+        document.getElementById('regForm').style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+      }, 1000);
+    }
+
+    // ── CONTACT SUBMIT ──
+    function handleContact(e) {
+      e.preventDefault();
+      const btn = document.getElementById('contactBtn');
       btn.textContent = 'Sending…';
-      btn.style.opacity = '0.6';
       btn.disabled = true;
       setTimeout(() => {
         btn.textContent = 'Sent ✓';
         btn.style.background = '#1a9c8c';
         btn.style.opacity = '1';
+        e.target.reset();
+        setTimeout(() => {
+          btn.textContent = 'Send Message';
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 3000);
       }, 1200);
     }
+
+    // ── KEYBOARD CLOSE ──
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
   </script>
 
 </body>
